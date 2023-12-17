@@ -1,0 +1,9 @@
+.fullContent {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.fullContent h1 {
+    font-size: 50px;
+}
