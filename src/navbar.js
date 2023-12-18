@@ -6,18 +6,18 @@ function Navbar() {
     const userRole = sessionStorage.getItem('role');
 
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('isLoggedIn', 'false');
         sessionStorage.removeItem('userId');
-        sessionStorage.removeItem('role'); // Remove role on logout
+        sessionStorage.removeItem('role'); 
         window.location.reload();
     };
 
     const getDashboardLink = () => {
         if (userRole === 'admin') {
-            return '/adminDashboard'; // Adjust the admin dashboard route as needed
+            return '/adminDashboard'; 
         } 
          else {
-            return '/dashboard'; // Default homepage for other roles
+            return '/dashboard'; 
         }
     };
 
