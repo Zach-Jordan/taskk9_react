@@ -6,24 +6,66 @@ import './styles/home.css';
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  const [loading, setLoading] = useState(true); // Track loading state
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedUser, setSelectedUser] = useState('');
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/index.php');
-        setPosts(response.data.posts || []); // Ensure posts is an array
+        let url = 'http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/index.php';
+
+        if (selectedCategory) {
+          url += `?category=${selectedCategory}`;
+        }
+
+        if (selectedUser) {
+          url += `${selectedCategory ? '&' : '?'}user=${selectedUser}`;
+        }
+
+        const response = await axios.get(url);
+        setPosts(response.data.posts || []);
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
-        setLoading(false); // Update loading state after fetching data
+        setLoading(false);
+      }
+    };
+
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
+        setCategories(response.data || []); // Ensure the response data is an array of categories with 'category_id' and 'category_name'
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/fetchUsers.php');
+        setUsers(response.data.users || []);
+      } catch (error) {
+        console.error('Error fetching users:', error);
       }
     };
 
     if (isLoggedIn) {
       fetchPosts();
+      fetchCategories();
+      fetchUsers();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, selectedCategory, selectedUser]);
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleUserChange = (event) => {
+    setSelectedUser(event.target.value);
+  };
 
   if (!isLoggedIn) {
     return <Navigate to="/" />;
@@ -31,21 +73,41 @@ export default function Home() {
 
   return (
     <div className="home_container">
+      <div className="filter_section">
+        <select value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="">All Categories</option>
+          {categories.map((category) => (
+            <option key={category.category_id} value={category.category_id}>
+              {category.category_name}
+            </option>
+          ))}
+        </select>
+        <select value={selectedUser} onChange={handleUserChange}>
+          <option value="">All Users</option>
+          {users.map((user) => (
+            <option key={user.user_id} value={user.user_id}>
+              {user.username}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="home_header">
         <h1>What's New</h1>
       </div>
       <div className="posts_list">
         {loading ? (
-          <p>Loading...</p> 
+          <p>Loading...</p>
         ) : posts.length === 0 ? (
-          <p>No posts available.</p> 
+          <p>No posts available.</p>
         ) : (
           posts.map((post) => (
             <div key={post.id} className="permalink_content">
               <h2>{post.page_title}</h2>
-              <p className='username'>{post.username}</p>
+              <p className="username">{post.username}</p>
               <p className="content">{post.content.substring(0, 100)}</p>
-              <Link to={`/post/${post.permalink}`}><button>View Post</button></Link>
+              <Link to={`/post/${post.permalink}`}>
+                <button>View Post</button>
+              </Link>
             </div>
           ))
         )}
@@ -53,5 +115,3 @@ export default function Home() {
     </div>
   );
 }
-
-
