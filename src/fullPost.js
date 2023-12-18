@@ -27,6 +27,7 @@ function FullPost() {
   return (
     <div className="fullContent">
       <h1>{post.page_title}</h1>
+      <img src={`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`} alt="Unable to load image" />
       <p>{post.content}</p>
     </div>
   );

@@ -5,98 +5,115 @@ import axios from 'axios';
 const DashboardEdit = () => {
     const location = useLocation();
     const { postData } = location.state || {};
-  const { postId } = useParams();
-  const [post, setPost] = useState({
-    category: '',
-    page_title: '',
-    content: '',
-    media: '',
-  });
-  const navigate = useNavigate();
+    const { postId } = useParams();
+    const [post, setPost] = useState({
+        category: '',
+        page_title: '',
+        content: '',
+        media: '',
+    });
+    const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (postData) {
-      setPost(postData);
-    } else {
-      axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/getEditPost.php?postId=${postId}`)
-        .then(response => {
-          setPost(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching post data:', error);
-        });
-    }
-  }, [postId, postData]);
-  const convertToPermalink = (title) => {
-    return title.trim().toLowerCase().replace(/\s+/g, '-');
-  };
+    useEffect(() => {
+        if (postData) {
+            setPost(postData);
+        } else {
+            axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/getEditPost.php?postId=${postId}`)
+                .then(response => {
+                    setPost(response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching post data:', error);
+                });
+        }
+    }, [postId, postData]);
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    useEffect(() => {
+        axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php')
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
+    }, []);
 
-    const { category, page_title, content, media } = post;
-    const generatedPermalink = convertToPermalink(page_title); 
+    const convertToPermalink = (title) => {
+        return title.trim().toLowerCase().replace(/\s+/g, '-');
+    };
 
-    try {
-      const response = await axios.put(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php?postId=${postId}`, {
-        category,
-        page_title,
-        content,
-        media,
-        permalink: generatedPermalink, 
-      });
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
 
-      console.log(response.data); 
+        const { category, page_title, content, media } = post;
+        const generatedPermalink = convertToPermalink(page_title);
 
-      // Handle success or do any necessary actions after updating data
-      navigate('/dashboard'); 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+        try {
+            const response = await axios.put(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php?postId=${postId}`, {
+                category,
+                page_title,
+                content,
+                media,
+                permalink: generatedPermalink,
+            });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setPost({ ...post, [name]: value });
-  };
-  return (
-    <div className='editPostPage'>
-      <form className='editPostForm' onSubmit={handleFormSubmit}>
-        <input
-          type='text'
-          name='page_title'
-          placeholder='Page Title'
-          value={post.page_title}
-          onChange={handleInputChange}
-          required
-        />
-        <textarea
-          name='content'
-          placeholder='Content'
-          value={post.content}
-          onChange={handleInputChange}
-          required
-        ></textarea>
-        <input
-          type='text'
-          name='media'
-          placeholder='Media'
-          value={post.media}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type='text'
-          name='category'
-          placeholder='Category'
-          value={post.category}
-          onChange={handleInputChange}
-          required
-        />
-        <button type='submit'>Update Data</button>
-      </form>
-    </div>
-  );
+            console.log(response.data);
+
+            navigate('/dashboard');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setPost({ ...post, [name]: value });
+    };
+
+    return (
+        <div className='editPostPage'>
+            <form className='editPostForm' onSubmit={handleFormSubmit}>
+                <input
+                    type='text'
+                    name='page_title'
+                    placeholder='Page Title'
+                    value={post.page_title}
+                    onChange={handleInputChange}
+                    required
+                />
+                <textarea
+                    name='content'
+                    placeholder='Content'
+                    value={post.content}
+                    onChange={handleInputChange}
+                    required
+                ></textarea>
+                <input
+                    type='text'
+                    name='media'
+                    placeholder='Media'
+                    value={post.media}
+                    onChange={handleInputChange}
+                    required
+                />
+                <select
+                    name='category'
+                    value={post.category}
+                    onChange={handleInputChange}
+                    required
+                >
+                    <option value=''>Select Category</option>
+                    {categories.map(category => (
+                        <option key={category.category_id} value={category.category_name}>
+                            {category.category_name}
+                        </option>
+                    ))}
+                </select>
+                <button type='submit'>Update Data</button>
+            </form>
+        </div>
+    );
 };
 
 export default DashboardEdit;
