@@ -89,7 +89,7 @@ const CreatePost = () => {
           name="media"
           onChange={handleMediaUpload}
           accept="image/*"
-          required
+          
         />
         <label htmlFor="category">Category:</label>
         {Array.isArray(categories) && categories.length > 0 ? (

@@ -14,6 +14,7 @@ const DashboardEdit = () => {
     });
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
+    const [removeImage, setRemoveImage] = useState(false); 
 
     useEffect(() => {
         if (postData) {
@@ -57,6 +58,12 @@ const DashboardEdit = () => {
         formData.append('media', media);
         formData.append('permalink', generatedPermalink);
 
+        if (removeImage) {
+            formData.append('removeImage', 'on');
+        } else {
+            formData.append('media', media);
+        }
+
         try {
             const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php', formData, {
                 headers: {
@@ -80,6 +87,10 @@ const DashboardEdit = () => {
         } else {
             setPost({ ...post, [name]: value });
         }
+    };
+
+    const handleCheckboxChange = (e) => {
+        setRemoveImage(e.target.checked);
     };
     
 
@@ -105,8 +116,15 @@ const DashboardEdit = () => {
                     type='file'
                     name='media'
                     onChange={handleInputChange}
-                    required
                 />
+                <label>
+                    Remove Image
+                    <input
+                        type='checkbox'
+                        name='removeImage'
+                        onChange={handleCheckboxChange}
+                    />
+                </label>
                 <select
                     name='category'
                     value={post.category}

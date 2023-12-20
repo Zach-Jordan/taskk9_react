@@ -4,7 +4,7 @@
     align-items: center;
     margin: 0px 50px;
 }
-
+ 
 .navbar h1 {
     font-size: 30px;
 }
@@ -18,7 +18,8 @@
     padding-left: 25px;
 }
 
-.navbar ul li a {
+a {
     color: rgb(28, 28, 28);
     text-decoration: none;
 }
+
