@@ -67,9 +67,17 @@ const DashboardEdit = () => {
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setPost({ ...post, [name]: value });
+        const { name, value, type } = e.target;
+    
+        if (type === 'file') {
+            // For file input, update the state with the selected file
+            setPost({ ...post, [name]: e.target.files[0] });
+        } else {
+            // For other inputs, update the state with their values
+            setPost({ ...post, [name]: value });
+        }
     };
+    
 
     return (
         <div className='editPostPage'>
@@ -90,13 +98,11 @@ const DashboardEdit = () => {
                     required
                 ></textarea>
                 <input
-                    type='text'
-                    name='media'
-                    placeholder='Media'
-                    value={post.media}
-                    onChange={handleInputChange}
-                    required
-                />
+                type='file'
+                name='media'
+                onChange={handleInputChange}
+                required
+            />
                 <select
                     name='category'
                     value={post.category}
