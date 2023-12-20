@@ -86,6 +86,7 @@ const CreatePost = () => {
         ></textarea>
         <input
           type="file" 
+          name="media"
           onChange={handleMediaUpload}
           accept="image/*"
           required

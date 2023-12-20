@@ -49,13 +49,19 @@ const DashboardEdit = () => {
         const { category, page_title, content, media } = post;
         const generatedPermalink = convertToPermalink(page_title);
 
+        const formData = new FormData();
+        formData.append('postId', postId);
+        formData.append('category', category);
+        formData.append('pageTitle', page_title);
+        formData.append('content', content);
+        formData.append('media', media);
+        formData.append('permalink', generatedPermalink);
+
         try {
-            const response = await axios.put(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php?postId=${postId}`, {
-                category,
-                page_title,
-                content,
-                media,
-                permalink: generatedPermalink,
+            const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
 
             console.log(response.data);
@@ -70,10 +76,8 @@ const DashboardEdit = () => {
         const { name, value, type } = e.target;
     
         if (type === 'file') {
-            // For file input, update the state with the selected file
             setPost({ ...post, [name]: e.target.files[0] });
         } else {
-            // For other inputs, update the state with their values
             setPost({ ...post, [name]: value });
         }
     };
@@ -98,11 +102,11 @@ const DashboardEdit = () => {
                     required
                 ></textarea>
                 <input
-                type='file'
-                name='media'
-                onChange={handleInputChange}
-                required
-            />
+                    type='file'
+                    name='media'
+                    onChange={handleInputChange}
+                    required
+                />
                 <select
                     name='category'
                     value={post.category}
@@ -111,7 +115,7 @@ const DashboardEdit = () => {
                 >
                     <option value=''>Select Category</option>
                     {categories.map(category => (
-                        <option key={category.category_id} value={category.category_name}>
+                        <option key={category.category_id} value={category.category_id}>
                             {category.category_name}
                         </option>
                     ))}

@@ -12,11 +12,12 @@ function FullPost() {
       try {
         const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/permalink.php?permalink=${permalink}`);
         setPost(response.data.post); 
+        console.log(response.data.post.media); 
       } catch (error) {
         console.error(error);
       }
     };
-
+  
     fetchPostByPermalink();
   }, [permalink]);
 
