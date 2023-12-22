@@ -8,6 +8,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
+  const [confirmPassword, setConfirmPassword] = useState('');
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
@@ -15,6 +16,11 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    if(password !== confirmPassword) {
+      alert("Passwords don't match. Please re-enter.");
+      return
+    }
 
     try {
       const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/sign_up.php', {
@@ -42,19 +48,26 @@ const SignUp = () => {
         required
       />
       <input
-  type="email"
-  placeholder="Email"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  required
-  pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
-  title="Please enter a valid email address"
-/>
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+        title="Please enter a valid email address"
+      />
       <input 
         type="password" 
         placeholder="Password" 
         value={password} 
         onChange={(e) => setPassword(e.target.value)} 
+        required
+      />
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
         required
       />
       <button type="submit">Sign Up</button>

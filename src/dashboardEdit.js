@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import './styles/post.css';
 
 const DashboardEdit = () => {
     const location = useLocation();
@@ -95,7 +96,7 @@ const DashboardEdit = () => {
     
 
     return (
-        <div className='editPostPage'>
+        <div className='postPage'>
             <form className='editPostForm' onSubmit={handleFormSubmit}>
                 <input
                     type='text'

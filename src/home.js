@@ -96,7 +96,7 @@ export default function Home() {
       </div>
       <div className="posts_list">
         {loading ? (
-          <p>Loading...</p>
+          <p>Loading Posts</p>
         ) : posts.length === 0 ? (
           <p>No posts available.</p>
         ) : (
@@ -105,7 +105,7 @@ export default function Home() {
               <h2>{post.page_title}</h2>
               <p className="username">{post.username}</p>
               <p className="content">{post.content.substring(0, 100)}</p>
-              <Link to={`/post/${post.permalink}`}>
+              <Link to={`/post/${post.post_id}/${post.permalink}`}>
                 <button>View Post</button>
               </Link>
             </div>
