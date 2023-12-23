@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './styles/dashboard.css';
+import './styles/permalink_content.css';
 
 export default function Dashboard() {
   const [posts, setPosts] = useState([]);
@@ -48,18 +49,20 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
-      <Link to="/dashboardCreate"><button>Create Post</button></Link>
+      <h2>Manage you Posts!</h2>
+      <Link to="/dashboardCreate"><button className='create_post'>Create Post</button></Link>
       <div className="posts_list">
         {posts && posts.length === 0 ? (
           <p>No posts available. Create a Post!</p>
         ) : (
           posts.map((post) => (
-            <div key={post.post_id} className="dashboard_content">
-              <h2>{post.page_title}</h2>
-              <p className='username'>{post.username}</p>
-              <p>{post.content.substring(0, 100)}</p>
-              <div className="dashboard_content_buttons">
-                <Link to={`/post/${post.permalink}`}><button>View Post</button></Link>
+            <div key={post.post_id} className="permalink_content">
+              <h2 className='post_title'>{post.page_title}</h2>
+              <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
+              <div className="permalink_content_buttons">
+              <Link to={`/post/${post.post_id}/${post.permalink}`}>
+                <button>Full Post</button>
+              </Link>
                 <button onClick={() => handleDelete(post.post_id)}>Delete</button>
                 <Link to={{
                   pathname: `/dashboardEdit/${post.post_id}`,

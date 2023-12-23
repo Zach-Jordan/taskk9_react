@@ -16,15 +16,22 @@ import ManageUsers from './adminManageUsers';
 
 function App() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const isLoggedIn = sessionStorage.getItem('userId') !== null;
 
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem('userId') !== null;
-
     if (!isLoggingIn && !isLoggedIn) {
       localStorage.removeItem('isLoggedIn');
       sessionStorage.removeItem('userId');
     }
-  }, [isLoggingIn]);
+  }, [isLoggingIn, isLoggedIn]);
+
+  const ProtectedRoute = ({ element, path }) => {
+    if (isLoggedIn) {
+      return <Route path={path} element={element} />;
+    } else {
+      return <Navigate to="/" />;
+    }
+  };
 
 
   return (

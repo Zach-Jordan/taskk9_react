@@ -1,7 +1,8 @@
-// fullPost.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ReactQuill from 'react-quill'; // Import ReactQuill
+import 'react-quill/dist/quill.snow.css';
 import './styles/fullPost.css';
 
 function FullPost() {
@@ -25,11 +26,12 @@ function FullPost() {
     return <p>Loading...</p>;
   }
 
+  console.log(post.content);
   return (
     <div className="fullContent">
       <h1>{post.page_title}</h1>
+      <div className="quill-data" dangerouslySetInnerHTML={{ __html: post.content }} />
       <img src={`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`} alt="Unable to load image" />
-      <p>{post.content}</p>
     </div>
   );
 }

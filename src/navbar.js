@@ -9,7 +9,7 @@ function Navbar() {
         localStorage.removeItem('isLoggedIn', 'false');
         sessionStorage.removeItem('userId');
         sessionStorage.removeItem('role'); 
-        window.location.reload();
+        window.location.href = '/';
     };
 
     const getDashboardLink = () => {

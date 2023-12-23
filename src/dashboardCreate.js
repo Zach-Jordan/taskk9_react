@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './styles/post.css';
 
 const CreatePost = () => {
@@ -67,7 +69,7 @@ const CreatePost = () => {
       console.error(error);
     }
   };
-
+console.log(content)
   return (
     <div className='postPage'>
       <form className="postForm" onSubmit={handleFormSubmit}>
@@ -78,18 +80,17 @@ const CreatePost = () => {
           onChange={(e) => setPageTitle(e.target.value)}
           required
         />
-        <textarea
-          placeholder="Content"
+        <ReactQuill
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={setContent}
+          placeholder="Content"
           required
-        ></textarea>
+        />
         <input
-          type="file" 
-          name="media"
+          type='file' 
+          name='media'
           onChange={handleMediaUpload}
-          accept="image/*"
-          
+          accept='image/*'
         />
         <label htmlFor="category">Category:</label>
         {Array.isArray(categories) && categories.length > 0 ? (

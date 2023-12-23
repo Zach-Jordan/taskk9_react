@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import './styles/home.css';
+import './styles/permalink_content.css';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -96,16 +97,16 @@ export default function Home() {
       </div>
       <div className="posts_list">
         {loading ? (
-          <p>Loading Posts</p>
+          <p>Loading...</p>
         ) : posts.length === 0 ? (
           <p>No posts available.</p>
         ) : (
           posts.map((post) => (
-            <div key={post.id} className="permalink_content">
-              <h2>{post.page_title}</h2>
+            <div key={post.post_id} className="permalink_content">
+              <h2 className='post_title'>{post.page_title}</h2>
               <p className="username">{post.username}</p>
-              <p className="content">{post.content.substring(0, 100)}</p>
-              <Link to={`/post/${post.post_id}/${post.permalink}`}>
+              <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
+              <Link to={`/post/${post.permalink}`}>
                 <button>View Post</button>
               </Link>
             </div>
