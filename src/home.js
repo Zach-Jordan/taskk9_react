@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import Select from 'react-select';
 import './styles/home.css';
 import './styles/permalink_content.css';
 
@@ -102,26 +103,37 @@ export default function Home() {
 
   return (
     <div className="home_container">
-      <div className="filter_section">
-        <select value={selectedCategory} onChange={handleCategoryChange}>
-          <option value="">All Categories</option>
-          {categories.map((category) => (
-            <option key={category.category_id} value={category.category_id}>
-              {category.category_name}
-            </option>
-          ))}
-        </select>
-        <select value={selectedUser} onChange={handleUserChange}>
-          <option value="">All Users</option>
-          {users.map((user) => (
-            <option key={user.user_id} value={user.user_id}>
-              {user.username}
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="home_header">
         <h1>What's New</h1>
+      </div>
+      <div className="filter_section">
+        <Select
+          className="select_component"
+          value={selectedCategory === '' ? null : categories.find((cat) => cat.value === selectedCategory)}
+          onChange={(selectedOption) => setSelectedCategory(selectedOption.value)}
+          options={[
+            { value: '', label: 'All Categories' }, 
+            ...categories.map((category) => ({
+              value: category.category_id,
+              label: category.category_name,
+            })),
+          ]}
+          placeholder="All Categories"
+        />
+
+        <Select
+          className="select_component"
+          value={selectedUser === '' ? null : users.find((usr) => usr.value === selectedUser)}
+          onChange={(selectedOption) => setSelectedUser(selectedOption.value)}
+          options={[
+            { value: '', label: 'All Users' }, 
+            ...users.map((user) => ({
+              value: user.user_id,
+              label: user.username,
+            })),
+          ]}
+          placeholder="All Users"
+        />
       </div>
       <div className="posts_list">
         {loading ? (

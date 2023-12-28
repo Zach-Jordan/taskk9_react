@@ -1,10 +1,31 @@
+.home_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .home_header {
     display: flex;
     justify-content: center;   
+} 
+
+.filter_section {
+    display: flex;
+    gap: 20px;
 }
 
 .home_header h1 {
-    font-size: 50px;
+    font-size: 60px;
+    margin-bottom: 40px;
+}
+
+.select_component {
+    height: 50px;
+    width: 175px;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 40px;
+    
 }
 
 .posts_list {
