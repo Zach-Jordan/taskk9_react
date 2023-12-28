@@ -31,7 +31,7 @@ function FullPost() {
     <div className="fullContent">
       <h1>{post.page_title}</h1>
       <div className="quill-data" dangerouslySetInnerHTML={{ __html: post.content }} />
-      <img src={`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`} alt="Unable to load image" />
+      {post.media && <img src={`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`} alt="Unable to load image" />}
     </div>
   );
 }

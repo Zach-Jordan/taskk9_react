@@ -1,6 +1,16 @@
 
 body {
+    text-align: center;
     background-color: rgb(238, 238, 238);
     font-family: Arial, Helvetica, sans-serif;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
+
+
+a:hover {
+    cursor: pointer;
+}

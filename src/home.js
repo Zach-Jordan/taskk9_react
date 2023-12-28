@@ -72,6 +72,34 @@ export default function Home() {
     return <Navigate to="/" />;
   }
 
+  // Extracts year-month-day
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0];
+  };
+
+  const renderTimestamp = (post) => {
+    if (post.updated_at === null) {
+      return <p className="timestamp">{formatDate(post.created_at)}</p>;
+    } else {
+      return <p className="timestamp">{formatDate(post.updated_at)}</p>;
+    }
+  };
+
+  const sortPostsByTimestamp = () => {
+    return posts.sort((a, b) => {
+      const dateA = a.updated_at || a.created_at; 
+      const dateB = b.updated_at || b.created_at;
+  
+      if (dateA === dateB) {
+        // If the timestamps are the same, sort by post_id to prioritize newer posts
+        return b.post_id - a.post_id;
+      }
+  
+      return new Date(dateB) - new Date(dateA);
+    });
+  };
+
   return (
     <div className="home_container">
       <div className="filter_section">
@@ -101,15 +129,18 @@ export default function Home() {
         ) : posts.length === 0 ? (
           <p>No posts available.</p>
         ) : (
-          posts.map((post) => (
+          sortPostsByTimestamp().map((post) => (
             <div key={post.post_id} className="permalink_content">
-              <h2 className='post_title'>{post.page_title}</h2>
-              <p className="username">{post.username}</p>
-              <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
-              <Link to={`/post/${post.permalink}`}>
-                <button>View Post</button>
+            {renderTimestamp(post)} {/* Render timestamp conditionally */}
+            <h2 className='post_title'>{post.page_title}</h2>
+            <p className="username">{post.username}</p>
+            <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
+            <div className="permalink_content_buttons">
+              <Link to={`/${post.post_id}/${post.permalink}`}>
+                <button>Full Post</button>
               </Link>
             </div>
+          </div>  
           ))
         )}
       </div>

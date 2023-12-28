@@ -10,7 +10,8 @@ const CreatePost = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [pageTitle, setPageTitle] = useState('');
   const [content, setContent] = useState('');
-  const [media, setMedia] = useState(null); // Store file as state
+  const [media, setMedia] = useState(null); 
+  const [selectedImage, setSelectedImage] = useState(null);
   const userId = sessionStorage.getItem('userId');
   const navigate = useNavigate();
 
@@ -32,21 +33,27 @@ const CreatePost = () => {
     }
   };
 
-  const convertToPermalink = (title) => {
-    return title.trim().toLowerCase().replace(/\s+/g, '-');
-  };
-
   const handleMediaUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       setMedia(file);
+  
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setSelectedImage(event.target.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
 
-    const timestamp = new Date().getTime();
+    const timestamp = new Date().toISOString();
+
+    const convertToPermalink = (title) => {
+      return title.trim().toLowerCase().replace(/\s+/g, '-');
+  };
 
     try {
       const formData = new FormData();
@@ -56,7 +63,7 @@ const CreatePost = () => {
       formData.append('content', content);
       formData.append('permalink', convertToPermalink(pageTitle));
       formData.append('created_at', timestamp);
-      formData.append('media', media); // Append file to FormData
+      formData.append('media', media);
 
       const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/post.php', formData, {
         headers: {
@@ -70,6 +77,7 @@ const CreatePost = () => {
     }
   };
 console.log(content)
+
   return (
     <div className='postPage'>
       <form className="postForm" onSubmit={handleFormSubmit}>
@@ -86,6 +94,13 @@ console.log(content)
           placeholder="Content"
           required
         />
+        {selectedImage && (
+            <img
+                src={selectedImage}
+                alt='Selected Image'
+                className='selected-image'
+            />
+        )}
         <input
           type='file' 
           name='media'

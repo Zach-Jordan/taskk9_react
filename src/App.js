@@ -32,7 +32,7 @@ function App() {
       return <Navigate to="/" />;
     }
   };
-
+ 
 
   return (
     <div className="App">
@@ -45,7 +45,7 @@ function App() {
           <Route path="/dashboardCreate" element={<CreatePost />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboardEdit/:postId" element={<DashboardEdit />} />
-          <Route path="/post/:post_id/:permalink" element={<FullPost />} />
+          <Route path="/:post_id/:permalink" element={<FullPost />} />
           <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/adminManagePosts" element={<ManagePosts />} />
           <Route path="/adminManageUsers" element={<ManageUsers />} />

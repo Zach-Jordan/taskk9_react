@@ -46,28 +46,53 @@ export default function Dashboard() {
     }
   };
 
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0]; // Extracts year-month-day
+  };
+ 
+  const renderTimestamp = (post) => {
+    if (post.updated_at === null) {
+      return <p className="timestamp">{formatDate(post.created_at)}</p>;
+    } else {
+      return <p className="timestamp">{formatDate(post.updated_at)}</p>;
+    }
+  };
+
+  const sortPostsByTimestamp = () => {
+    return posts.sort((a, b) => {
+      const dateA = a.updated_at || a.created_at; 
+      const dateB = b.updated_at || b.created_at;
+  
+      return new Date(dateB) - new Date(dateA); 
+    });
+  };
+
   return (
     <div className="dashboard">
       <h1>Dashboard</h1>
       <h2>Manage you Posts!</h2>
-      <Link to="/dashboardCreate"><button className='create_post'>Create Post</button></Link>
+      <div className="creat_post_div">
+        <Link to="/dashboardCreate">
+          <button className='create_post'>Create Post</button>
+        </Link>
+      </div>
       <div className="posts_list">
         {posts && posts.length === 0 ? (
           <p>No posts available. Create a Post!</p>
         ) : (
-          posts.map((post) => (
+          sortPostsByTimestamp().map((post) => (
             <div key={post.post_id} className="permalink_content">
-              <h2 className='post_title'>{post.page_title}</h2>
-              <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
+            {renderTimestamp(post)} {/* Render timestamp conditionally */}
+            <h2 className='post_title'>{post.page_title}</h2>
+            <p className="username">{post.username}</p>
+            <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
               <div className="permalink_content_buttons">
-              <Link to={`/post/${post.post_id}/${post.permalink}`}>
+              <Link to={`/${post.post_id}/${post.permalink}`} className="post-link">
                 <button>Full Post</button>
               </Link>
                 <button onClick={() => handleDelete(post.post_id)}>Delete</button>
-                <Link to={{
-                  pathname: `/dashboardEdit/${post.post_id}`,
-                  state: { postData: post } 
-                }}>
+                <Link to={`/dashboardEdit/${post.post_id}`}>
                   <button>Edit</button>
                 </Link>
               </div>
@@ -78,4 +103,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

@@ -1,148 +1,197 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './styles/post.css';
 
 const DashboardEdit = () => {
-    const location = useLocation();
-    const { postData } = location.state || {};
-    const { postId } = useParams();
-    const [post, setPost] = useState({
-        category: '',
-        page_title: '',
-        content: '',
-        media: '',
-    });
-    const [categories, setCategories] = useState([]);
-    const navigate = useNavigate();
-    const [removeImage, setRemoveImage] = useState(false); 
+  const location = useLocation();
+  const { postData } = location.state || {};
+  const { postId } = useParams();
+  const [content, setContent] = useState('');
+  const [post, setPost] = useState({
+    category: '',
+    page_title: '',
+    content: '',
+    media: '',
+  });
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [removeImage, setRemoveImage] = useState(false);
+  const [newImage, setNewImage] = useState(null);
 
-    useEffect(() => {
-        if (postData) {
-            setPost(postData);
-        } else {
-            axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/getEditPost.php?postId=${postId}`)
-                .then(response => {
-                    setPost(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching post data:', error);
-                });
-        }
-    }, [postId, postData]);
+  useEffect(() => {
+    if (postData) {
+      setPost({
+        ...postData,
+        category: postData.category_id,
+        media: postData.media,
+      });
+      if (postData.media) {
+        setSelectedImage(postData.media);
+      }
+    } else {
+      axios
+        .get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/getEditPost.php?postId=${postId}`)
+        .then((response) => {
+          const fetchedPost = response.data;
+          setPost({
+            ...fetchedPost,
+            category: fetchedPost.category_id,
+            media: fetchedPost.media,
+          });
+          if (fetchedPost.media) {
+            setSelectedImage(fetchedPost.media);
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching post data:', error);
+        });
+    }
+  }, [postId, postData]);
 
-    useEffect(() => {
-        axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php')
-            .then(response => {
-                setCategories(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-            });
-    }, []);
+  useEffect(() => {
+    axios
+      .get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php')
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching categories:', error);
+      });
+  }, []);
 
-    const convertToPermalink = (title) => {
-        return title.trim().toLowerCase().replace(/\s+/g, '-');
-    };
+  const convertToPermalink = (title) => {
+    return title.trim().toLowerCase().replace(/\s+/g, '-');
+  };
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-        const { category, page_title, content, media } = post;
-        const generatedPermalink = convertToPermalink(page_title);
+    const { category, page_title, content, media } = post;
+    const generatedPermalink = convertToPermalink(page_title);
 
-        const formData = new FormData();
-        formData.append('postId', postId);
-        formData.append('category', category);
-        formData.append('pageTitle', page_title);
-        formData.append('content', content);
-        formData.append('media', media);
-        formData.append('permalink', generatedPermalink);
+    const formData = new FormData();
+    formData.append('postId', postId);
+    formData.append('category', category);
+    formData.append('pageTitle', page_title);
+    formData.append('content', content);
+    formData.append('media',media);
+    formData.append('permalink', generatedPermalink);
 
-        if (removeImage) {
-            formData.append('removeImage', 'on');
-        } else {
-            formData.append('media', media);
-        }
+    if (removeImage) {
+      formData.append('removeImage', 'on');
+    }
 
-        try {
-            const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+    try {
+      const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-            console.log(response.data);
+      console.log(response.data);
 
-            navigate('/dashboard');
-        } catch (error) {
-            console.error(error);
-        }
-    };
+      navigate('/dashboard');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const handleInputChange = (e) => {
-        const { name, value, type } = e.target;
-    
-        if (type === 'file') {
-            setPost({ ...post, [name]: e.target.files[0] });
-        } else {
-            setPost({ ...post, [name]: value });
-        }
-    };
+  const handleInputChange = (e) => {
+    const { name, type } = e.target;
+    if (type === 'file') {
+      const file = e.target.files[0];
+      setPost((prevPost) => ({
+        ...prevPost,
+        [name]: file,
+      }));
 
-    const handleCheckboxChange = (e) => {
-        setRemoveImage(e.target.checked);
-    };
-    
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setNewImage(event.target.result);
+        setSelectedImage(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const { value } = e.target;
+      setPost((prevPost) => ({
+        ...prevPost,
+        [name]: value,
+      }));
+    }
+  };
 
-    return (
-        <div className='postPage'>
-            <form className='editPostForm' onSubmit={handleFormSubmit}>
-                <input
-                    type='text'
-                    name='page_title'
-                    placeholder='Page Title'
-                    value={post.page_title}
-                    onChange={handleInputChange}
-                    required
-                />
-                <textarea
-                    name='content'
-                    placeholder='Content'
-                    value={post.content}
-                    onChange={handleInputChange}
-                    required
-                ></textarea>
-                <input
-                    type='file'
-                    name='media'
-                    onChange={handleInputChange}
-                />
-                <label>
-                    Remove Image
-                    <input
-                        type='checkbox'
-                        name='removeImage'
-                        onChange={handleCheckboxChange}
-                    />
-                </label>
-                <select
-                    name='category'
-                    value={post.category}
-                    onChange={handleInputChange}
-                    required
-                >
-                    <option value=''>Select Category</option>
-                    {categories.map(category => (
-                        <option key={category.category_id} value={category.category_id}>
-                            {category.category_name}
-                        </option>
-                    ))}
-                </select>
-                <button type='submit'>Update Data</button>
-            </form>
-        </div>
-    );
+  const handleCheckboxChange = (e) => {
+    setRemoveImage(e.target.checked);
+    if (e.target.checked) {
+      setNewImage(null);
+      setSelectedImage(null);
+    }
+  };
+
+  const handleQuillChange = (value) => {
+    setPost((prevPost) => ({
+      ...prevPost,
+      content: value,
+    }));
+  };
+
+  console.log('Post state:', post);
+  return (
+    <div className='postPage'>
+      <form className='editPostForm' onSubmit={handleFormSubmit}>
+        <input
+          className='title_input'
+          type='text'
+          name='page_title'
+          placeholder='Page Title'
+          value={post.page_title || ''}
+          onChange={handleInputChange}
+          required
+        />
+        <ReactQuill
+          className='quill'
+          value={post.content || ''}
+          onChange={handleQuillChange}
+          placeholder='Content'
+          required
+        />
+        {(post.media || newImage) && (
+          <img
+            src={newImage || `http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`}
+            alt='Selected Image'
+            className='selected-image'
+          />
+        )}
+        <input type='file' name='media' onChange={handleInputChange} />
+        <label>
+          Remove Image
+          <input
+            type='checkbox'
+            name='removeImage'
+            onChange={handleCheckboxChange}
+          />
+        </label>
+        <select
+          name='category'
+          value={post.category}
+          onChange={handleInputChange}
+          required
+        >
+          <option value=''>Select Category</option>
+          {categories.map((category) => (
+            <option key={category.category_id} value={category.category_id}>
+              {category.category_name}
+            </option>
+          ))}
+        </select>
+        <button type='submit'>Update Data</button>
+      </form>
+    </div>
+  );
 };
 
 export default DashboardEdit;

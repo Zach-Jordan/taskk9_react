@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './styles/dashboard.css';
+import './styles/permalink_content.css'
 import AdminDashboard from './adminDashboard';
 
 export default function ManagePosts() {
@@ -46,27 +47,39 @@ export default function ManagePosts() {
     }
   };
 
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toISOString().split('T')[0]; // Extracts year-month-day
+  };
+ 
+  const sortPostsByTimestamp = () => {
+    return posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  };
+
   return (
     <div className="dashboard">
       <AdminDashboard />
       <h1>Admin Posts</h1>
-      <Link to="/dashboardCreate"><button>Create Post</button></Link>
+      <div className="creat_post_div">
+        <Link to="/dashboardCreate">
+          <button className='create_post'>Create Post</button>
+        </Link>
+      </div>
       <div className="posts_list">
         {posts && posts.length === 0 ? (
           <p>No posts available. Create a Post!</p>
         ) : (
-          posts.map((post) => (
-            <div key={post.post_id} className="dashboard_content">
-              <h2>{post.page_title}</h2>
-              <p className='username'>{post.username}</p>
-              <p>{post.content.substring(0, 100)}</p>
-              <div className="dashboard_content_buttons">
-                <Link to={`/post/${post.permalink}`}><button>View Post</button></Link>
+          sortPostsByTimestamp().map((post) => (
+            <div key={post.post_id} className="permalink_content">
+              <p className="timestamp">{formatDate(post.created_at)}</p>
+              <h2 className='post_title'>{post.page_title}</h2>
+              <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />
+              <div className="permalink_content_buttons">
+              <Link to={`/post/${post.post_id}/${post.permalink}`} className="post-link">
+                <button>Full Post</button>
+              </Link>
                 <button onClick={() => handleDelete(post.post_id)}>Delete</button>
-                <Link to={{
-                  pathname: `/dashboardEdit/${post.post_id}`,
-                  state: { postData: post } 
-                }}>
+                <Link to={`/dashboardEdit/${post.post_id}`}>
                   <button>Edit</button>
                 </Link>
               </div>
