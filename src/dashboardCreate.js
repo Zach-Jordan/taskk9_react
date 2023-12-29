@@ -71,13 +71,18 @@ const CreatePost = () => {
         },
       });
   
-      console.log(response.data);
+      const isAdmin = sessionStorage.getItem('role') === 'admin'; 
+      if (isAdmin) {
+        navigate('/adminManagePosts');
+      } else {
+        navigate('/dashboard');
+      }
+
     } catch (error) {
       console.error(error);
     }
   };
   
-console.log(content)
 
   return (
     <div className='postPage'>

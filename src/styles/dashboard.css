@@ -10,7 +10,21 @@
 .dashboard h1 {
     font-size: 60px;
 }
+    
+.dashboard .create_post{
+    margin-top: 40px;
+    margin-bottom: 80px;
+    height: 80px;
+    width: 160px;
+    padding: 0;
+    border: none;
+    font-size: 20px;
+    border-radius: 3px;
+    background-color: rgb(210, 210, 210);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 
+/*Admin styles*/
 .admin-buttons {
     display: flex;
     justify-content: center;
@@ -18,7 +32,7 @@
     margin-top: 40px;
     margin-bottom: 40px;
 }
-    
+
 .manage_buttons {
     height: 75px;
     width: 150px;
@@ -29,20 +43,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     font-size: 20px;
 }
-/*Admin posts style*/
-.dashboard .create_post{
-    margin-top: 40px;
-    margin-bottom: 80px;
-    height: 80px;
-    width: 160px;
-    padding: 0;
-    border: none;
-    border-radius: 3px;
-    background-color: rgb(210, 210, 210);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-}
 
-/*Admin user styles*/
 table {
     margin-top: 40px;
     width: 750px;
@@ -86,7 +87,8 @@ table button {
 
 .form_container {
     margin-top: 40px;
-
+    display: flex;
+    flex-direction: column;
 }
 
 .form_inputs {
@@ -95,9 +97,14 @@ table button {
     align-content: center;
 }
 
+.multi_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .multi_form input {
     height: 40px;
-    width: 250px;
+    width: 300px;
     font-size: 20px;
     padding: 0;
     border: none;

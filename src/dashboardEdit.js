@@ -139,7 +139,6 @@ const DashboardEdit = () => {
     }));
   };
 
-  console.log('Post state:', post);
   return (
     <div className='postPage'>
       <div className="edit_header">

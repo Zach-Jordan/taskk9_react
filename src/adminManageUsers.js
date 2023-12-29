@@ -180,7 +180,7 @@ function ManageUsers() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-              />
+              /> 
               <input
                 type="email"
                 placeholder="Email"
@@ -200,9 +200,9 @@ function ManageUsers() {
                 {error && <p className='error-message'>{error}</p>}
               </div>
             <div className='submit_button'>
-            <button onClick={isUpdateMode ? handleUpdateUser : handleAddUser}>
-              {isUpdateMode ? 'Update User' : 'Add User'}
-            </button>
+              <button onClick={isUpdateMode ? handleUpdateUser : handleAddUser}>
+                {isUpdateMode ? 'Update User' : 'Add User'}
+              </button>
             </div>
           </div>
         </div>
