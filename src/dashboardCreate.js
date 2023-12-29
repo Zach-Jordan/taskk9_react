@@ -58,7 +58,7 @@ const CreatePost = () => {
     try {
       const formData = new FormData();
       formData.append('userId', userId);
-      formData.append('category', selectedCategory);
+      formData.append('category', selectedCategory.value);
       formData.append('pageTitle', pageTitle);
       formData.append('content', content);
       formData.append('permalink', convertToPermalink(pageTitle));
@@ -80,8 +80,12 @@ console.log(content)
 
   return (
     <div className='postPage'>
+      <div className="post_header">
+        <h1>What's New</h1>
+      </div>
       <form className="postForm" onSubmit={handleFormSubmit}>
         <input
+          className='title_input'
           type="text"
           placeholder="Page Title"
           value={pageTitle}
@@ -101,6 +105,7 @@ console.log(content)
                 className='selected-image'
             />
         )}
+        <div className="bottom_form">
         <input
           type='file' 
           name='media'
@@ -125,7 +130,8 @@ console.log(content)
         ) : (
           <p>No categories available</p>
         )}
-        <button type="submit">Add Data</button>
+        </div>
+        <button className="submit_button" type="submit">Post</button>
       </form>
     </div>
   );

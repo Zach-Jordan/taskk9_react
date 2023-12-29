@@ -2,6 +2,7 @@ import { React, useEffect, useState }from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import './styles/App.css';
 import Navbar from './navbar';
+import Footer from './footer';
 import SignUp from './sign_up';
 import Welcome from './welcome';
 import Home from './home';
@@ -36,7 +37,10 @@ function App() {
 
   return (
     <div className="App">
+      <div className='nav'>
       <Navbar />
+      </div>
+      <div className="routes">
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/sign_up" element={<SignUp />} />
@@ -50,6 +54,10 @@ function App() {
           <Route path="/adminManagePosts" element={<ManagePosts />} />
           <Route path="/adminManageUsers" element={<ManageUsers />} />
         </Routes>
+      </div>
+      <div className='footer'></div>
+        <Footer />
+      <div className='footer'></div>
     </div>
   );
 }

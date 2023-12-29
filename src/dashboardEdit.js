@@ -142,6 +142,9 @@ const DashboardEdit = () => {
   console.log('Post state:', post);
   return (
     <div className='postPage'>
+      <div className="edit_header">
+        <h1>What's New</h1>
+      </div>
       <form className='editPostForm' onSubmit={handleFormSubmit}>
         <input
           className='title_input'
@@ -166,7 +169,6 @@ const DashboardEdit = () => {
             className='selected-image'
           />
         )}
-        <input type='file' name='media' onChange={handleInputChange} />
         <label>
           Remove Image
           <input
@@ -175,20 +177,24 @@ const DashboardEdit = () => {
             onChange={handleCheckboxChange}
           />
         </label>
-        <select
-          name='category'
-          value={post.category}
-          onChange={handleInputChange}
-          required
-        >
-          <option value=''>Select Category</option>
-          {categories.map((category) => (
-            <option key={category.category_id} value={category.category_id}>
-              {category.category_name}
-            </option>
-          ))}
-        </select>
-        <button type='submit'>Update Data</button>
+        <div className="bottom_form">
+          <input type='file' name='media' onChange={handleInputChange} />
+          <label htmlFor="category">Category:</label>
+          <select
+            name='category'
+            value={post.category}
+            onChange={handleInputChange}
+            required
+          >
+            <option value=''>Select Category</option>
+            {categories.map((category) => (
+              <option key={category.category_id} value={category.category_id}>
+                {category.category_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button className="submit_button" type='submit'>Update Data</button>
       </form>
     </div>
   );

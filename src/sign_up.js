@@ -39,7 +39,7 @@ const SignUp = () => {
   };
 
   return (
-    <form className="sign_upFrom" onSubmit={handleSignUp}>
+    <form className="sign_upForm" onSubmit={handleSignUp}>
       <input 
         type="text" 
         placeholder="Username" 

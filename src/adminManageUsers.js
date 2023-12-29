@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AdminDashboard from './adminDashboard';
+import "./styles/dashboard.css"
 import { Link } from 'react-router-dom';
 
 function ManageUsers() {
@@ -10,6 +11,7 @@ function ManageUsers() {
   const [password, setPassword] = useState('');
   const [userIdToUpdate, setUserIdToUpdate] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -22,6 +24,11 @@ function ManageUsers() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleDelete = async (userId) => {
@@ -45,10 +52,16 @@ function ManageUsers() {
     }
   };
 
-  
   const handleAddUser = async () => {
+    setError('');
+
     if (!username || !email || !password) {
-      console.error('All fields are required');
+      setError('All fields are required');
+      return;
+    }
+
+    if (!isEmailValid(email)) {
+      setError('Invalid email format');
       return;
     }
 
@@ -68,10 +81,11 @@ function ManageUsers() {
         setShowForm(false); // Hide the form after adding the user
         fetchUsers(); // Refresh the users list after adding a new user
       } else {
-        console.error(response.data.error);
+        setError(response.data.error || 'An error occurred');
       }
     } catch (error) {
       console.error(error);
+      setError('An error occurred');
     }
   };
 
@@ -125,11 +139,12 @@ function ManageUsers() {
   };
 
   const isUpdateMode = userIdToUpdate !== null;
+    
 
   return (
-    <div>
+    <div className="dashboard">
       <AdminDashboard />
-      <h2>All Users</h2>
+      <h1>All Users</h1>
       <table>
         <thead>
           <tr>
@@ -145,42 +160,51 @@ function ManageUsers() {
               <td>{user.user_id}</td>
               <td>{user.username}</td>
               <td>{user.email}</td>
-              <td>
-                <button onClick={() => handleDelete(user.user_id)}>Delete</button>
-                <button onClick={() => handleEditUser(user)}>Edit</button>
+              <td className="table_buttons">
+                <button  onClick={() => handleDelete(user.user_id)}>Delete</button>
+                <button  onClick={() => handleEditUser(user)}>Edit</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddUserClick}>Add User</button>
+      <button className='add_button' onClick={handleAddUserClick}>Add User</button>
       {showForm && (
-        <div>
+        <div className='form_container'>
           <h2>{isUpdateMode ? 'Update User' : 'Add User'}</h2>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button onClick={isUpdateMode ? handleUpdateUser : handleAddUser}>
-            {isUpdateMode ? 'Update User' : 'Add User'}
-          </button>
+          <div className='multi_form'>
+            <div className='form_inputs'>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+              <div className='error_msg'>
+                {error && <p className='error-message'>{error}</p>}
+              </div>
+            <div className='submit_button'>
+            <button onClick={isUpdateMode ? handleUpdateUser : handleAddUser}>
+              {isUpdateMode ? 'Update User' : 'Add User'}
+            </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

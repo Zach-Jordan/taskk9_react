@@ -14,7 +14,7 @@ export default function ManagePosts() {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/manageIndex.php?userId=${userId}`);
-        setPosts(response.data.posts || []); // Set empty array if response.data.posts is undefined
+        setPosts(response.data.posts || []); 
         console.log(response.data.posts);
       } catch (error) {
         console.error(error);

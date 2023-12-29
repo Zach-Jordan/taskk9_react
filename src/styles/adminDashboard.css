@@ -1,0 +1,27 @@
+.admin-buttons {
+display: flex;
+justify-content: center;
+gap: 50px;
+}
+
+.manage_buttons {
+    height: 75px;
+    width: 150px;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(210, 210, 210);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-size: 20px;
+}
+
+.add_button {
+    height: 75px;
+    width: 150px;
+    padding: 0;
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(210, 210, 210);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-size: 20px;
+}
