@@ -15,8 +15,9 @@ const CreatePost = () => {
   const userId = sessionStorage.getItem('userId');
   const navigate = useNavigate();
 
+  // Fetchs categories and check login status on component mount
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
     if (!isLoggedIn) {
       navigate('/login');
     }
@@ -24,6 +25,7 @@ const CreatePost = () => {
     fetchCategories();
   }, [navigate]);
 
+  // Function to fetch categories from backend
   const fetchCategories = async () => {
     try {
       const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
@@ -33,6 +35,7 @@ const CreatePost = () => {
     }
   };
 
+  // Handles media upload
   const handleMediaUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -46,6 +49,7 @@ const CreatePost = () => {
     }
   };
 
+  // Handles form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
   
@@ -57,6 +61,7 @@ const CreatePost = () => {
   
     try {
       const formData = new FormData();
+      // Append form data for submission
       formData.append('userId', userId);
       formData.append('category', selectedCategory);
       formData.append('pageTitle', pageTitle);
@@ -71,6 +76,7 @@ const CreatePost = () => {
         },
       });
   
+      // Redirect based on user role after successful post submission
       const isAdmin = sessionStorage.getItem('role') === 'admin'; 
       if (isAdmin) {
         navigate('/adminManagePosts');

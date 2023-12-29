@@ -10,6 +10,7 @@ const Login = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
+  // Function for handling login 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -23,10 +24,11 @@ const Login = () => {
 
       const { userId, role, error: loginError, message } = response.data || {};
 
+      // Stores user details in session upon successful login
       if (userId) {
         sessionStorage.setItem('userId', userId);
         sessionStorage.setItem('role', role);
-        localStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('isLoggedIn', 'true');
 
         setSuccessMessage('Login successful');
 

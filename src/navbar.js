@@ -2,16 +2,18 @@ import { Link } from 'react-router-dom';
 import './styles/navbar.css';
 
 function Navbar() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     const userRole = sessionStorage.getItem('role');
 
+    // Handles logout
     const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn', 'false');
+        sessionStorage.removeItem('isLoggedIn', 'false');
         sessionStorage.removeItem('userId');
         sessionStorage.removeItem('role'); 
         window.location.href = '/';
     };
 
+    // Handles dashbord links based on user role
     const getDashboardLink = () => {
         if (userRole === 'admin') {
             return '/adminDashboard'; 

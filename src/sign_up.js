@@ -9,11 +9,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
   const [confirmPassword, setConfirmPassword] = useState('');
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
 
+  // Handle signup 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
@@ -22,6 +19,7 @@ const SignUp = () => {
       return
     }
 
+    // Sends sign-up data to the server
     try {
       const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/sign_up.php', {
         username,
@@ -36,6 +34,12 @@ const SignUp = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  // Handles email format
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   };
 
   return (

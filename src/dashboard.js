@@ -6,14 +6,15 @@ import './styles/permalink_content.css';
 
 export default function Dashboard() {
   const [posts, setPosts] = useState([]);
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   const userId = sessionStorage.getItem('userId');
 
+  // Fetchs posts on component mount or when user status changes
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/manageIndex.php?userId=${userId}`);
-        setPosts(response.data.posts || []); // Set empty array if response.data.posts is undefined
+        setPosts(response.data.posts || []); 
         console.log(response.data.posts);
       } catch (error) {
         console.error(error);
@@ -25,6 +26,7 @@ export default function Dashboard() {
     }
   }, [isLoggedIn, userId]);
   
+  // handles deletion of a post
   const handleDelete = async (postId) => {
     try {
       const response = await axios.delete('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/deletePosts.php', {
@@ -46,10 +48,12 @@ export default function Dashboard() {
     }
   };
 
+  // formats timestamp
   const formatDate = (timestamp) => {
     return timestamp.split(' ')[0]; 
   };
  
+  // Function to render timestamp based on whether the post was updated or created
   const renderTimestamp = (post) => {
     if (post.updated_at === null) {
       return <p className="timestamp">{formatDate(post.created_at)}</p>;
@@ -58,6 +62,7 @@ export default function Dashboard() {
     }
   };
 
+    // Function to sort posts by timestamp (updated or created)
   const sortPostsByTimestamp = () => {
     return posts.sort((a, b) => {
       const dateA = a.updated_at || a.created_at; 
@@ -82,7 +87,7 @@ export default function Dashboard() {
         ) : (
           sortPostsByTimestamp().map((post) => (
             <div key={post.post_id} className="permalink_content">
-            {renderTimestamp(post)} {/* Render timestamp conditionally */}
+            {renderTimestamp(post)} 
             <h2 className='post_title'>{post.page_title}</h2>
             <p className="username">{post.username}</p>
             <div className="content" dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150)}} />

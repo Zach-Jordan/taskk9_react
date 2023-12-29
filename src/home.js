@@ -7,22 +7,25 @@ import './styles/permalink_content.css';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedUser, setSelectedUser] = useState('');
 
+  // Fetches posts
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         let url = 'http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/index.php';
 
+        // Appends selected category to URL if present
         if (selectedCategory) {
           url += `?category=${selectedCategory}`;
         }
 
+        // Appends selected user to URL if present
         if (selectedUser) {
           url += `${selectedCategory ? '&' : '?'}user=${selectedUser}`;
         }
@@ -36,15 +39,17 @@ export default function Home() {
       }
     };
 
+    // Function to fetch categories
     const fetchCategories = async () => {
       try {
         const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
-        setCategories(response.data || []); // Ensure the response data is an array of categories with 'category_id' and 'category_name'
+        setCategories(response.data || []); 
       } catch (error) {
         console.error('Error fetching categories:', error);
       }
     };
 
+    // Fetchs users
     const fetchUsers = async () => {
       try {
         const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/fetchUsers.php');
@@ -61,10 +66,12 @@ export default function Home() {
     }
   }, [isLoggedIn, selectedCategory, selectedUser]);
 
+  // handles category change
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
 
+  // Handles user change
   const handleUserChange = (event) => {
     setSelectedUser(event.target.value);
   };
@@ -75,9 +82,10 @@ export default function Home() {
 
   // Extracts year-month-day
   const formatDate = (timestamp) => {
-    return timestamp.split(' ')[0]; // Assuming the timestamp is in the format YYYY-MM-DD HH:MM:SS
+    return timestamp.split(' ')[0]; 
   };
 
+  // Renders timestamp
   const renderTimestamp = (post) => {
     if (post.updated_at === null) {
       return <p className="timestamp">{formatDate(post.created_at)}</p>;
@@ -86,6 +94,7 @@ export default function Home() {
     }
   };
 
+  // Function to sort posts by timestamp
   const sortPostsByTimestamp = () => {
     return posts.sort((a, b) => {
       const dateA = a.updated_at || a.created_at; 

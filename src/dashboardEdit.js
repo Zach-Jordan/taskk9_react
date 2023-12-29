@@ -22,6 +22,8 @@ const DashboardEdit = () => {
   const [removeImage, setRemoveImage] = useState(false);
   const [newImage, setNewImage] = useState(null);
 
+
+  // Fetchs post data based on postId or from location state
   useEffect(() => {
     if (postData) {
       setPost({
@@ -52,6 +54,7 @@ const DashboardEdit = () => {
     }
   }, [postId, postData]);
 
+  // Fetchs categories from backend
   useEffect(() => {
     axios
       .get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php')
@@ -63,10 +66,12 @@ const DashboardEdit = () => {
       });
   }, []);
 
+  // Converts title to permalink format
   const convertToPermalink = (title) => {
     return title.trim().toLowerCase().replace(/\s+/g, '-');
   };
 
+  // Handles form submission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -100,6 +105,7 @@ const DashboardEdit = () => {
     }
   };
 
+  // Handles input changes
   const handleInputChange = (e) => {
     const { name, type } = e.target;
     if (type === 'file') {
@@ -124,6 +130,7 @@ const DashboardEdit = () => {
     }
   };
 
+  // Handles removing image
   const handleCheckboxChange = (e) => {
     setRemoveImage(e.target.checked);
     if (e.target.checked) {
@@ -132,6 +139,7 @@ const DashboardEdit = () => {
     }
   };
 
+  // Handles Quill editor changes
   const handleQuillChange = (value) => {
     setPost((prevPost) => ({
       ...prevPost,

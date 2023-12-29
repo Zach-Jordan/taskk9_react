@@ -13,10 +13,12 @@ function ManageUsers() {
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState('');
 
+  // Fetches users on component mount
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  // Function to fetch users from the backend
   const fetchUsers = async () => {
     try {
       const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/fetchUsers.php');
@@ -26,11 +28,13 @@ function ManageUsers() {
     }
   };
 
+  // validates email format
   const isEmailValid = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
+  // handles deletion of a user
   const handleDelete = async (userId) => {
     try {
       const response = await axios.delete('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/deleteUsers.php', {
@@ -52,6 +56,7 @@ function ManageUsers() {
     }
   };
 
+  // adds a new user
   const handleAddUser = async () => {
     setError('');
 
@@ -78,8 +83,8 @@ function ManageUsers() {
         setUsername('');
         setEmail('');
         setPassword('');
-        setShowForm(false); // Hide the form after adding the user
-        fetchUsers(); // Refresh the users list after adding a new user
+        setShowForm(false); 
+        fetchUsers(); 
       } else {
         setError(response.data.error || 'An error occurred');
       }
@@ -89,6 +94,7 @@ function ManageUsers() {
     }
   };
 
+  // updates a user's information
   const handleUpdateUser = async () => {
     try {
       const payload = {
@@ -122,6 +128,7 @@ function ManageUsers() {
     }
   };
 
+  // populates the form fields when editing a user
   const handleEditUser = (user) => {
     setUsername(user.username);
     setEmail(user.email);
@@ -130,6 +137,7 @@ function ManageUsers() {
     setShowForm(true);
   };
 
+  // handles clicking on the Add User button
   const handleAddUserClick = () => {
     setShowForm(true);
     setUserIdToUpdate(null);

@@ -8,7 +8,7 @@ import AdminDashboard from './adminDashboard';
 
 export default function ManagePosts() {
   const [posts, setPosts] = useState([]); 
-  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; 
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true'; 
   const userId = sessionStorage.getItem('userId'); 
   const [selectedCategory, setSelectedCategory] = useState(''); 
   const [selectedUser, setSelectedUser] = useState(''); 
@@ -18,8 +18,8 @@ export default function ManagePosts() {
 
   // Fetches posts, categories, and users based on logged-in status and user ID
   useEffect(() => {
+    // Fetches posts for a specific user
     const fetchPosts = async () => {
-      // Fetches posts for a specific user
       try {
         const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/manageIndex.php?userId=${userId}`);
         setPosts(response.data.posts || []);
@@ -29,8 +29,8 @@ export default function ManagePosts() {
       }
     };
 
+    // Fetches categories
     const fetchCategories = async () => {
-      // Fetches categories
       try {
         const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
         setCategories(response.data || []);
