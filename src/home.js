@@ -75,8 +75,7 @@ export default function Home() {
 
   // Extracts year-month-day
   const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toISOString().split('T')[0];
+    return timestamp.split(' ')[0]; // Assuming the timestamp is in the format YYYY-MM-DD HH:MM:SS
   };
 
   const renderTimestamp = (post) => {
@@ -140,7 +139,7 @@ export default function Home() {
           <p>Loading...</p>
         ) : posts.length === 0 ? (
           <p>No posts available.</p>
-        ) : (
+        ) : ( 
           sortPostsByTimestamp().map((post) => (
             <div key={post.post_id} className="permalink_content">
             {renderTimestamp(post)} {/* Render timestamp conditionally */}

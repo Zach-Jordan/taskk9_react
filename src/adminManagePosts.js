@@ -48,8 +48,7 @@ export default function ManagePosts() {
   };
 
   const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toISOString().split('T')[0]; // Extracts year-month-day
+    return timestamp.split(' ')[0]; // Assuming the timestamp is in the format YYYY-MM-DD HH:MM:SS
   };
  
   const sortPostsByTimestamp = () => {

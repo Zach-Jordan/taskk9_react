@@ -47,35 +47,36 @@ const CreatePost = () => {
   };
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault(); 
-
+    e.preventDefault();
+  
     const timestamp = new Date().toISOString();
-
+  
     const convertToPermalink = (title) => {
       return title.trim().toLowerCase().replace(/\s+/g, '-');
-  };
-
+    };
+  
     try {
       const formData = new FormData();
       formData.append('userId', userId);
-      formData.append('category', selectedCategory.value);
+      formData.append('category', selectedCategory);
       formData.append('pageTitle', pageTitle);
       formData.append('content', content);
       formData.append('permalink', convertToPermalink(pageTitle));
       formData.append('created_at', timestamp);
       formData.append('media', media);
-
+  
       const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/post.php', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+  
 console.log(content)
 
   return (

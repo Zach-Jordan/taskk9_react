@@ -47,8 +47,7 @@ export default function Dashboard() {
   };
 
   const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toISOString().split('T')[0]; // Extracts year-month-day
+    return timestamp.split(' ')[0]; 
   };
  
   const renderTimestamp = (post) => {
@@ -95,7 +94,7 @@ export default function Dashboard() {
                 <Link to={`/dashboardEdit/${post.post_id}`}>
                   <button>Edit</button>
                 </Link>
-              </div>
+              </div> 
             </div>
           ))
         )}
