@@ -13,7 +13,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/manageIndex.php?userId=${userId}`);
+        const response = await axios.get(`http://taskk9.byethost7.com/php_backend/manageIndex.php?userId=${userId}`);
         setPosts(response.data.posts || []); 
         console.log(response.data.posts);
       } catch (error) {
@@ -29,7 +29,7 @@ export default function Dashboard() {
   // handles deletion of a post
   const handleDelete = async (postId) => {
     try {
-      const response = await axios.delete('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/deletePosts.php', {
+      const response = await axios.delete('http://taskk9.byethost7.com/php_backend/deletePosts.php', {
         data: {
           postId: postId
         }

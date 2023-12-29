@@ -17,7 +17,7 @@ const Login = () => {
     setSuccessMessage('');
 
     try {
-      const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/login.php', {
+      const response = await axios.post('http://taskk9.byethost7.com/php_backend/login.php', {
         username,
         password,
       });

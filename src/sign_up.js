@@ -21,7 +21,7 @@ const SignUp = () => {
 
     // Sends sign-up data to the server
     try {
-      const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/sign_up.php', {
+      const response = await axios.post('http://taskk9.byethost7.com/php_backend/sign_up.php', {
         username,
         email,
         password,

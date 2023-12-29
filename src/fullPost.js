@@ -13,7 +13,7 @@ function FullPost() {
   useEffect(() => {
     const fetchPostByParams = async () => {
       try {
-        const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/permalink.php?post_id=${post_id}&permalink=${permalink}`);
+        const response = await axios.get(`http://taskk9.byethost7.com/php_backend/permalink.php?post_id=${post_id}&permalink=${permalink}`);
         // Update the post state with fetched data
         setPost(response.data.post); 
       } catch (error) {
@@ -34,7 +34,7 @@ function FullPost() {
     <div className="fullContent">
       <h1>{post.page_title}</h1>
       <div className="quill-data" dangerouslySetInnerHTML={{ __html: post.content }} />
-      {post.media && <img src={`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`} alt="Unable to load image" />}
+      {post.media && <img src={`http://taskk9.byethost7.com/php_backend/${post.media}`} alt="Unable to load image" />}
     </div>
   );
 }

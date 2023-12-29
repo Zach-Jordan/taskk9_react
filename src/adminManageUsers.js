@@ -21,7 +21,7 @@ function ManageUsers() {
   // Function to fetch users from the backend
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/fetchUsers.php');
+      const response = await axios.get('http://taskk9.byethost7.com/php_backend/fetchUsers.php');
       setUsers(response.data.users || []);
     } catch (error) {
       console.error(error);
@@ -37,7 +37,7 @@ function ManageUsers() {
   // handles deletion of a user
   const handleDelete = async (userId) => {
     try {
-      const response = await axios.delete('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/deleteUsers.php', {
+      const response = await axios.delete('http://taskk9.byethost7.com/php_backend/deleteUsers.php', {
         data: {
           userId: userId
         }
@@ -71,7 +71,7 @@ function ManageUsers() {
     }
 
     try {
-      const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/sign_up.php', {
+      const response = await axios.post('http://taskk9.byethost7.com/php_backend/sign_up.php', {
         username: username,
         email: email,
         password: password
@@ -104,7 +104,7 @@ function ManageUsers() {
         user_id: userIdToUpdate
       };
 
-      const response = await axios.put('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/updateUser.php', payload);
+      const response = await axios.put('http://taskk9.byethost7.com/php_backend/updateUser.php', payload);
 
       console.log(response.data);
 

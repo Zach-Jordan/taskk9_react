@@ -36,7 +36,7 @@ const DashboardEdit = () => {
       }
     } else {
       axios
-        .get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/getEditPost.php?postId=${postId}`)
+        .get(`http://taskk9.byethost7.com/php_backend/getEditPost.php?postId=${postId}`)
         .then((response) => {
           const fetchedPost = response.data;
           setPost({
@@ -57,7 +57,7 @@ const DashboardEdit = () => {
   // Fetchs categories from backend
   useEffect(() => {
     axios
-      .get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php')
+      .get('http://taskk9.byethost7.com/php_backend/categories.php')
       .then((response) => {
         setCategories(response.data);
       })
@@ -91,7 +91,7 @@ const DashboardEdit = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/edit.php', formData, {
+      const response = await axios.post('http://taskk9.byethost7.com/php_backend/edit.php', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -171,7 +171,7 @@ const DashboardEdit = () => {
         />
         {(post.media || newImage) && (
           <img
-            src={newImage || `http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/${post.media}`}
+            src={newImage || `http://taskk9.byethost7.com/php_backend/${post.media}`}
             alt='Selected Image'
             className='selected-image'
           />

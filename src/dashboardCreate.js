@@ -28,7 +28,7 @@ const CreatePost = () => {
   // Function to fetch categories from backend
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
+      const response = await axios.get('http://taskk9.byethost7.com/php_backend/categories.php');
       setCategories(response.data || []);
     } catch (error) {
       console.error(error);
@@ -70,7 +70,7 @@ const CreatePost = () => {
       formData.append('created_at', timestamp);
       formData.append('media', media);
   
-      const response = await axios.post('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/post.php', formData, {
+      const response = await axios.post('http://taskk9.byethost7.com/php_backend/post.php', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

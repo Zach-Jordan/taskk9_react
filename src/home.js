@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        let url = 'http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/index.php';
+        let url = 'http://taskk9.byethost7.com/php_backend/index.php';
 
         // Appends selected category to URL if present
         if (selectedCategory) {
@@ -42,7 +42,7 @@ export default function Home() {
     // Function to fetch categories
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
+        const response = await axios.get('http://taskk9.byethost7.com/php_backend/categories.php');
         setCategories(response.data || []); 
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -52,7 +52,7 @@ export default function Home() {
     // Fetchs users
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/fetchUsers.php');
+        const response = await axios.get('http://taskk9.byethost7.com/php_backend/fetchUsers.php');
         setUsers(response.data.users || []);
       } catch (error) {
         console.error('Error fetching users:', error);

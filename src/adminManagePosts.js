@@ -21,7 +21,7 @@ export default function ManagePosts() {
     // Fetches posts for a specific user
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/manageIndex.php?userId=${userId}`);
+        const response = await axios.get(`http://taskk9.byethost7.com/php_backend/manageIndex.php?userId=${userId}`);
         setPosts(response.data.posts || []);
         console.log(response.data.posts);
       } catch (error) {
@@ -32,7 +32,7 @@ export default function ManagePosts() {
     // Fetches categories
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/categories.php');
+        const response = await axios.get('http://taskk9.byethost7.com/php_backend/categories.php');
         setCategories(response.data || []);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -42,7 +42,7 @@ export default function ManagePosts() {
     const fetchUsers = async () => {
       // Fetches users
       try {
-        const response = await axios.get('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/fetchUsers.php');
+        const response = await axios.get('http://taskk9.byethost7.com/php_backend/fetchUsers.php');
         setUsers(response.data.users || []);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -60,7 +60,7 @@ export default function ManagePosts() {
   // Handles post deletion
   const handleDelete = async (postId) => {
     try {
-      const response = await axios.delete('http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/deletePosts.php', {
+      const response = await axios.delete('http://taskk9.byethost7.com/php_backend/deletePosts.php', {
         data: {
           postId: postId
         }
@@ -103,7 +103,7 @@ export default function ManagePosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        let url = 'http://localhost:31/Web_Dev_2/Assignments/TaskK9/php_backend/index.php';
+        let url = 'http://taskk9.byethost7.com/php_backend/index.php';
 
         if (selectedCategory) {
           url += `?category=${selectedCategory}`;
